@@ -1,0 +1,39 @@
+// index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parallel HTTP Requests with Web Workers</title>
+</head>
+<body>
+  <script>
+    // 主线程代码
+
+    // 创建一个新的 Web Worker
+    const worker = new Worker('worker.js');
+
+    // 定义一个数组来存储请求的结果
+    const results = [];
+
+    // 监听从 Web Worker 返回的消息
+    worker.onmessage = function(event) {
+      // 接收到消息时将结果存储到数组中
+      results.push(event.data);
+      
+      // 当所有请求都完成时进行处理
+      if (results.length === urls.length) {
+        // 所有请求都完成了，可以处理结果了
+        console.log('All requests completed:', results);
+      }
+    };
+
+    // 定义要请求的 URL 列表
+    const urls = ['http://httpbin.org/ip', 'http://httpbin.org/ip', 'http://httpbin.org/delay/1'];
+
+    // 将 URL 列表发送给 Web Worker
+    worker.postMessage(urls);
+  </script>
+</body>
+</html>
