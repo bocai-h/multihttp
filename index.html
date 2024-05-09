@@ -1,39 +1,87 @@
-// index.html
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parallel HTTP Requests with Web Workers</title>
-</head>
-<body>
-  <script>
-    // 主线程代码
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parallel HTTP Requests with Web Workers</title>
+  </head>
+  <body>
+    <h1>hello worker</h1>
+    <div>
+      <a
+        href="https://www.ruanyifeng.com/blog/2018/07/web-worker.html"
+        target="_blank"
+        >教程</a
+      >
+    </div>
+    <script>
+      // 主线程代码
 
-    // 创建一个新的 Web Worker
-    const worker = new Worker('worker.js');
+      // 创建一个新的 Web Worker
+      // const worker = new Worker("worker.js");
 
-    // 定义一个数组来存储请求的结果
-    const results = [];
+      // 定义一个数组来存储请求的结果
+      // const results = [];
 
-    // 监听从 Web Worker 返回的消息
-    worker.onmessage = function(event) {
-      // 接收到消息时将结果存储到数组中
-      results.push(event.data);
-      
-      // 当所有请求都完成时进行处理
-      if (results.length === urls.length) {
-        // 所有请求都完成了，可以处理结果了
-        console.log('All requests completed:', results);
-      }
-    };
+      // // 监听从 Web Worker 返回的消息
+      // worker.onmessage = function(event) {
+      //   // 接收到消息时将结果存储到数组中
+      //   results.push(event.data);
 
-    // 定义要请求的 URL 列表
-    const urls = ['http://httpbin.org/ip', 'http://httpbin.org/ip', 'http://httpbin.org/delay/1'];
+      //   // 当所有请求都完成时进行处理
+      //   if (results.length === urls.length) {
+      //     // 所有请求都完成了，可以处理结果了
+      //     console.log('All requests completed:', results);
+      //   }
+      // };
 
-    // 将 URL 列表发送给 Web Worker
-    worker.postMessage(urls);
-  </script>
-</body>
+      // // 定义要请求的 URL 列表
+      // const urls = ['http://httpbin.org/ip', 'http://httpbin.org/ip', 'http://httpbin.org/delay/1'];
+      // worker.onmessage = function (event) {
+      //   console.log("Main thread received message:", event.data);
+      // };
+      // 将 URL 列表发送给 Web Worker
+      // worker.postMessage("Hello world");
+      // // worker.postMessage({method: 'echo', args: ['Work']});
+      // worker.postMessage("Hi");
+      // // worker.postMessage({msg: 'terminate'});
+      // worker.postMessage("bbb");
+
+      // var uInt8Array = new Uint8Array(new ArrayBuffer(10));
+      // for (var i = 0; i < uInt8Array.length; ++i) {
+      //   uInt8Array[i] = i * 2; // [0, 2, 4, 6, 8,...]
+      // }
+      // worker.postMessage(uInt8Array);
+
+      // function createWorker(f) {
+      //   console.log("f.toString():", f.toString());
+      //   var blob = new Blob(["(" + f.toString() + ")()"]);
+      //   var url = window.URL.createObjectURL(blob);
+      //   var worker = new Worker(url);
+      //   return worker;
+      // }
+      // var pollingWorker = createWorker(function (e) {
+      //   setInterval(function () {
+      //     fetch("http://httpbin.org/ip")
+      //       .then((response) => response.json())
+      //       .then(function (data) {
+      //         self.postMessage(data);
+      //       });
+      //   }, 5000);
+      // });
+
+      // const pollingWorker = new Worker("worker2.js");
+      // pollingWorker.onmessage = function (e) {
+      //   console.log("Receive msg:", e.data);
+      // };
+      // setTimeout(() => {
+      //   pollingWorker.terminate();
+      // }, 10000)
+
+      var worker = new Worker("worker3.js");
+      worker.onmessage = function (e) {
+        console.log("Main thread Receive msg:", e.data);
+      };
+    </script>
+  </body>
 </html>
